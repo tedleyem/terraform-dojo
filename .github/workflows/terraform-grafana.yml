@@ -1,0 +1,65 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install the latest version of Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      # Previews the changes that Terraform will make
+      - name: Plan Terraform
+        id: plan
+        continue-on-error: true
+        run: terraform plan -input=false -no-color
+
+      # Post the preview (terraform plan) from the previous step as a GitHub pull request comment
+      - name: Post Plan to GitHub PR
+        if: github.ref != 'refs/heads/main'
+        uses: mshick/add-pr-comment@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+          message: |
+            Applying:
+
+            ```
+            ${{ steps.plan.outputs.stdout }}
+            ```
+
+      # Applies the terraform configuration files when the branch is `main`
+      - name: Apply Terraform
+        if: github.ref == 'refs/heads/main'
+        id: apply
+        continue-on-error: true
+        run: |
+          terraform apply -auto-approve
+
+      # add the terraform state to git instead of a terraform backend
+      # used for testing.
+      - name: commit the terraform state
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Updating Terraform state
+          file_pattern: terraform.tfstate
