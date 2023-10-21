@@ -15,3 +15,10 @@ resource "grafana_folder" "AWS" {
 
   title = "AWS"
 }
+
+resource "grafana_folder" "NBA" {
+  provider = grafana.cloud
+
+  title = "NBA"
+}
+
