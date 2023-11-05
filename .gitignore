@@ -36,7 +36,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# TEST Cases
-test-*
 
 crack.txt
