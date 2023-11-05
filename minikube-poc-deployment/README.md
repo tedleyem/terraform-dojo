@@ -5,10 +5,15 @@
  This project is used to deploy Kubernetes resources in a local minikube cluster using Terraform
  because testing using aws and other cloud resources cost pennies. 
 
+This simply deploys nginx into a specific namespace and checks that its up and running.
+
 Requirements: 
 
 * [minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [terraform cli](https://www.terraform.io/downloads)
+
+
+
 
 # R&R - References and Resources
 
