@@ -36,5 +36,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-
+#misc
 crack.txt
+
+# wazuh-minikube
+wazuh-minikube/files/*
