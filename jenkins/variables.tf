@@ -11,7 +11,7 @@ variable "aws_region" {
 
 variable "tagging_name" {
   description = "aws region to use"
-  default     = "jenkins-ec2-demo"
+  default     = "jenkins-ec2-cluster"
 }
 
 variable "s3_bucket_name" {
@@ -20,7 +20,7 @@ variable "s3_bucket_name" {
 }
 
 variable "s3_bucket_state" {
-  default   = "jenkins-demo/terraform.tfstate"
+  default   = "jenkins-cluster/terraform.tfstate"
 }
 
 variable "availability_zones" {
@@ -44,13 +44,5 @@ variable "vpc_id" {
 }
 
 variable "vpc_cidr_block" {
-  default = ""
-}
-
-variable "public_subnet" {
-  default = ""
-}
-
-variable "private_subnet" {
   default = ""
 }
